@@ -24,6 +24,7 @@ import org.neo4j.geoff.store.EntityStore;
 import org.neo4j.geoff.store.IndexToken;
 import org.neo4j.geoff.store.NodeToken;
 import org.neo4j.geoff.store.RelationshipToken;
+import org.neo4j.geoff.util.NodeComparatorsHelper;
 import org.neo4j.graphdb.*;
 import org.neo4j.graphdb.index.Index;
 import org.neo4j.graphdb.index.IndexHits;
@@ -585,8 +586,8 @@ public class Neo4jGraphProxy implements GraphProxy<PropertyContainer> {
 				relationships.addAll(match(b, a));
 			}
 		}
-		TreeSet<Node> startNodes = new TreeSet<Node>();
-		TreeSet<Node> endNodes = new TreeSet<Node>();
+		TreeSet<Node> startNodes = new TreeSet<Node>(NodeComparatorsHelper.getNodeIdComparator()); // jdk1.7 support see #5045147
+		TreeSet<Node> endNodes = new TreeSet<Node>(NodeComparatorsHelper.getNodeIdComparator()); // jdk1.7 support see #5045147
 		for (Relationship relationship : relationships) {
 			startNodes.add(relationship.getStartNode());
 			endNodes.add(relationship.getEndNode());
